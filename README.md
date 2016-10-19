@@ -6,6 +6,9 @@
 [![IDE](https://img.shields.io/badge/XCode-8-blue.svg)]()
 [![iOS](https://img.shields.io/badge/iOS-8.0-green.svg)]()
 
+**[README in English](https://github.com/douban/FRDIntent/blob/master/README_EN.md)**
+
+
 **FRDIntent** 包括两部分 FRDIntent/Intent 和 FRDIntent/URLRoutes。它们分别可以用于处理应用内和应用外的 view controller 调用。
 
 
@@ -248,4 +251,4 @@ FRDIntentTests 文件夹包含了 FRDIntent 单元测试代码。单元测试不
 
 ## License
 
-FRDIntent is released under the MIT license. See LICENSE for details.
+The MIT license.
