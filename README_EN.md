@@ -6,7 +6,18 @@
 [![IDE](https://img.shields.io/badge/XCode-8-blue.svg)]()
 [![iOS](https://img.shields.io/badge/iOS-8.0-green.svg)]()
 
-**FRDIntent** consists of two parts: FRDIntent/Intent and FRDIntent/URLRoutes for the internal and external calls to UIViewController respectively.
+**FRDIntent** consists of two parts: `FRDIntent/Intent` and `FRDIntent/URLRoutes` for the internal and external calls to UIViewController respectively in iOS.
+
+`FRDIntent/Intent` is a messaging object for invoking an UIViewController. The concept is similar to [Intent](https://developer.android.com/guide/components/intents-filters.html) API on Android.
+
+`FRDIntent/URLRoutes` provides a router from URLs to the app's functional blocks.
+
+FRDIntent/Intent and FRDIntent/URLRoutes can interact with each other. FRIntent/Intent handles internal call and FRDIntent/URLRoutes handles external call. In the implementation of FRDIntent/URLRoutes, FRDIntent/URLRoutes only exposes the external call's entry. Within the app, FRDIntent/Intent effectively handles the launch process for FRDIntent/URLRoutes.
+
+The separation of FRDIntent/Intent and FRDIntent/URLRoutes is effectively the separation of internal and external calls. There are some advantages of this separation:
+
+- FRDIntent/Intent can be at handling internal calls. It now supports transmission of complex data and customized transition animation. It will be more difficult to implement those with a simple URL Router solution.
+- Seperation of internal calls and external calls makes sense. It makes it easier to choose which views can be exposed to external calls, and which are invokable by internal calls only.
 
 
 ## Installation
@@ -49,7 +60,7 @@ Choose the right version: [https://github.com/douban/FRDIntent/releases](https:/
 
 ## Intent
 
-FRDIntent/Intent is a messaging object for invoking an UIViewController. The concept is similar to [Intent](https://developer.android.com/guide/components/intents-filters.html) API on Android. But admittedly, FRDIntent/Intent is extremely simple and even crude, when comparing with Android's Intent. FRDIntent/Intent is only designed to handles internal between view controller within an app.
+`FRDIntent/Intent` is a messaging object for invoking an UIViewController. The concept is similar to [Intent](https://developer.android.com/guide/components/intents-filters.html) API on Android. But admittedly, FRDIntent/Intent is extremely simple and even crude, when comparing with Android's Intent. FRDIntent/Intent is only designed to handles internal between view controller within an app.
 
 The traditional way of handling view controller's transition in often involves giving a view controller all the details of the recipient view on how it will be created. This creates unwanted tight dependencies dependencies between view controllers. FRDIntent/Intent is for eliminating this kind of dependency.
 
@@ -81,7 +92,9 @@ Via plist file:
   controllerManager.register(plistFile: plistPath)
 ```
 
-#### Launch a view controller by class
+#### Launch a view controller
+
+Via class:
 
 ```Swift
   let intent = FRDIntent(clazz: SecondViewController.self)
@@ -89,7 +102,7 @@ Via plist file:
   manager.startController(source: self, intent: intent)
 ```
 
-#### Launch a view controller by url
+Via url:
 
 ```Swift
   let intent = FRDIntent(uri: URL(string: "/frodo/firstview")!)
@@ -143,7 +156,7 @@ FRDIntent's default transition is `FRDPushDisplay` within `starController`, or `
 
 ## URLRoutes
 
-FRDIntent/URLRoutes provides a router from URLs to the app's functional blocks. iOS provides a solution to launch an app from another app based on URL protocols. One may land on different pages based on the path and parameters passed with the URL. FRDIntent/URLRoutes takes advantage of this mechanism, and allows developers to easily define how to invoke functional blocks with URL.
+`FRDIntent/URLRoutes` provides a router from URLs to the app's functional blocks. iOS provides a solution to launch an app from another app based on URL protocols. One may land on different pages based on the path and parameters passed with the URL. FRDIntent/URLRoutes takes advantage of this mechanism, and allows developers to easily define how to invoke functional blocks with URL.
 
 In a sense, FRDIntent/URLRoutes is similar to many URL Routers in the community, [JLRoutes](https://github.com/joeldev/JLRoutes) for instance. But writing routes with FRDIntent/URLRoutes allows you to organically integrate the routes with FRDIntent/Intent, which makes it a lot simpler to navigate through internal calls and external calls.
 
@@ -212,15 +225,6 @@ In the class `FRDControllerManager`, methods `startController(source: UIViewCont
 
 In Swift, to add this constraint, we'd have to awkwardly implement some generic types, and what's even worse is that generic methods in Swift don't work in Objective-C. So the tradeoff is we only limit the `source` parameter to be a `UIViewController`, it's up to the developer to conform with the protocols and implement necessary methods as needed.
 
-
-## Intent 和 URLRoutes
-
-FRDIntent/Intent and FRDIntent/URLRoutes can interact with each other. FRIntent/Intent handles internal call and FRDIntent/URLRoutes handles external call. In the implementation of FRDIntent/URLRoutes, FRDIntent/URLRoutes only exposes the external call's entry. In the app, FRDIntent/Intent effectively handles the launch process for FRDIntent/URLRoutes.
-
-The separation of FRDIntent/Intent and FRDIntent/URLRoutes is effectively the separation of internal and external calls. There are some advantages of this separation:
-
-- FRDIntent/Intent can be at handling internal calls. It now supports transmission of complex data and customized transition animation. It will be more difficult to implement those with a simple URL Router solution.
-- Seperation of internal calls and external calls makes sense. It makes it easier to choose which views can be exposed to external calls, and which are invokable by internal calls only.
 
 ## FRDIntentDemo
 
